@@ -8,9 +8,9 @@ Date::Date(int yaer, int month, int day)
 
 void Date::Print()
 {
-	cout << "年:" << _yaer 
-		 << "月:" << _month
-		 << "日:" << _day << endl;
+	cout << _yaer << "年"
+		 << _month << "月"
+		 << _day << "日" << endl;
 }
 
 bool Date::operator==(const Date& x)
@@ -59,20 +59,33 @@ bool Date::operator>(const Date& x)
 
 int Date::GetMonthDay(int yaer, int month)
 {
+	//static int DayArr[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+	//if (month !=2)
+	//{
+	//	return DayArr[month];
+	//	
+	//}
+	//else if (((yaer % 4 == 0 && yaer % 100 == 0) || yaer % 400 == 0) && month == 2)
+	//{
+	//	return 29;
+	//}
 	static int DayArr[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
-	if (month !=2)
-	{
-		return DayArr[month];
-		
-	}
-	else if (((yaer % 4 == 0 && yaer % 100 == 0) || yaer % 400 == 0) && month == 2)
+	if (((yaer % 4 == 0 && yaer % 100 == 0) || yaer % 400 == 0) && month == 2)
 	{
 		return 29;
+	}
+	else
+	{
+		return DayArr[month];
 	}
 }
 
 Date& Date::operator+=(int day)
 {
+	if (day < 0)
+	{
+		return *this -= day;
+	}
 	_day += day;
 	while (_day > GetMonthDay(_yaer, _month))
 	{
@@ -107,4 +120,32 @@ Date Date::operator+(int day)
 		}
 	}
 	return tmp;*/
+}
+
+Date& Date::operator-=(int day)
+{
+	if (day < 0)
+	{
+		return *this += -day;
+	}
+	_day -= day;
+	while (_day <= 0)
+	{
+		--_month;
+		if (_month == 0)
+		{
+			_month = 12;
+			--_yaer;
+		}
+		int MMonth=GetMonthDay(_yaer, _month);
+		_day = _day + MMonth;
+	}                                                                                                                                                                                                            
+	return *this;
+}
+
+Date Date::operator-(int day)
+{
+	Date _Date = *this;
+	_Date -= day;
+	return _Date;
 }

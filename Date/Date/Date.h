@@ -21,6 +21,8 @@ public:
 	int GetMonthDay(int yaer, int month);
 	Date& operator+=(int day);
 	Date operator+(int day);
+	Date& operator-=(int day);
+	Date operator-(int day);
 private:
 	int _yaer;
 	int _month;
