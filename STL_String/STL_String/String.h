@@ -35,16 +35,14 @@ namespace Bit
 		//}
 
 		string(const char* str = "")//或者string(const char* str = "")
-		{
+		{//初始化！
 			_str = new char[strlen(str) + 1];//如果不加+1那么有效字符-1
 			_size = strlen(str);//strlen不包含\0
 			_capcity = strlen(str);
 			strcpy(_str, str);
 		}
-		string(const string& s);
-		string& operator=(const string& s);
-		
-		~string()
+
+		~string()//析构函数
 		{
 			delete[] _str;
 			_str = nullptr;
@@ -61,18 +59,48 @@ namespace Bit
 			return _size;
 		}
 
-		char& operator[](size_t pos)
+		char& operator[](size_t pos)//实现随机查找
 		{
 			assert(pos < _size);
 			return _str[pos];
+		}
+
+		string& operator = (const string& str)//复制拷贝
+		{
+			if (this == &str)//防止自己给自己赋值
+				//是两个地址的匹对！
+				return *this;
+
+			delete[] _str;//this指针指向的
+			_str = new char[strlen(str._str)+1];
+			_size = str._size;//strlen不包含\0
+			_capcity = str._capcity;
+			strcpy(_str, str._str);
+			return *this;
+		}
+
+		string(const string& str)//拷贝构造
+		{
+			_str = new char[strlen(str._str) + 1];
+			_size = str._size;
+			_capcity = str._capcity;
+			strcpy(_str, str._str);
+
 		}
 	private:
 		char* _str;
 		size_t _size;
 		size_t _capcity;
 	};
-	void test()
+	/*void test()
 	{
 		string s1("hello world");
+	}*/
+	void test2()
+	{ 
+		string s1("hello world");
+		string s2;
+		string s3(s1);
+		s2 = s1;
 	}
 }
