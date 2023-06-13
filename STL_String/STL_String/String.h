@@ -2,7 +2,6 @@
 #include <assert.h>
 #pragma once
 #pragma warning(disable:4996)
-
 namespace Bit
 {
 	class string
@@ -87,11 +86,17 @@ namespace Bit
 			strcpy(_str, str._str);
 
 		}
-	private:
+		friend std::ostream& operator << (std::ostream& os, const string& str);//流提取输出
+ 	private:
 		char* _str;
 		size_t _size;
 		size_t _capcity;
 	};
+	std::ostream& operator << (std::ostream& os, const string& str)
+	{
+		os << str.c_str();
+		return os;
+	}
 	/*void test()
 	{
 		string s1("hello world");
@@ -102,5 +107,7 @@ namespace Bit
 		string s2;
 		string s3(s1);
 		s2 = s1;
+		string s4;
+		std::cout << s1 <<std::endl;
 	}
 }
