@@ -8,12 +8,21 @@ namespace Bit
 	{
 	public:
 		//迭代器
-		typedef char* iterator;
+	/*	typedef char* iterator;
 		iterator begin()
 		{
 			return _str;
 		}
 		iterator end()
+		{
+			return _size + _str;
+		}*/
+		typedef const char* const_iterator;
+		const_iterator begin() const
+		{
+			return _str;
+		}
+		const_iterator end() const
 		{
 			return _size + _str;
 		}
@@ -60,32 +69,72 @@ namespace Bit
 
 		char& operator[](size_t pos)//实现随机查找
 		{
-			assert(pos < _size);
+			assert(pos < _size);//!真与!假
 			return _str[pos];
-		}
+		} 
 
-		string& operator = (const string& str)//复制拷贝
+		//string& operator = (const string& str)//复制拷贝
+		//{
+		//	if (this == &str)//防止自己给自己赋值
+		//		//是两个地址的匹对！
+		//		return *this;
+
+		//	delete[] _str;//this指针指向的
+		//	_str = new char[strlen(str._str)+1];
+		//	_size = str._size;//strlen不包含\0
+		//	_capcity = str._capcity;
+		//	strcpy(_str, str._str);
+		//	return *this;
+		//}
+
+		string& operator = (const string& str)//复制拷贝2
 		{
 			if (this == &str)//防止自己给自己赋值
 				//是两个地址的匹对！
 				return *this;
-
-			delete[] _str;//this指针指向的
-			_str = new char[strlen(str._str)+1];
-			_size = str._size;//strlen不包含\0
-			_capcity = str._capcity;
-			strcpy(_str, str._str);
+			string tmp(str._str);
+			swap(tmp);
 			return *this;
 		}
+		//string(const string& str)//拷贝构造方法1
+		//{
+		//	_str = new char[strlen(str._str) + 1];
+		//	_size = str._size;
+		//	_capcity = str._capcity;
+		//	strcpy(_str, str._str);
+		//}
 
-		string(const string& str)//拷贝构造
+		//string(const string& str)//拷贝构造方法2
+		//	: _str(new char[str._capcity])
+		//	, _size(str._size)
+		//	, _capcity(str._capcity)
+		//{
+		//	strcpy(_str, str._str);
+		//}
+		void swap(string& str)
 		{
-			_str = new char[strlen(str._str) + 1];
-			_size = str._size;
-			_capcity = str._capcity;
-			strcpy(_str, str._str);
-
+			std::swap(_str, str._str);
+			std::swap(_capcity, str._capcity);
+			std::swap(_size, str._size);
 		}
+		string(const string& str)//拷贝构造方法3
+			: _str(nullptr)
+			, _size(0)
+			, _capcity(0)
+		{
+			string tmp(str._str);//相当于调用构造
+			swap(tmp);
+		}
+		//string(const string& str)//拷贝构造方法3
+		//	: _str(nullptr)
+		//	, _size(0)
+		//	, _capcity(0)
+		//{
+		//	string tmp(str._str);//相当于调用构造
+		//	std::swap(_str, tmp._str);
+		//	std::swap(_capcity, tmp._capcity);
+		//	std::swap(_size, tmp._size);
+		//}
 		friend std::ostream& operator << (std::ostream& os, const string& str);//流提取输出
  	private:
 		char* _str;
