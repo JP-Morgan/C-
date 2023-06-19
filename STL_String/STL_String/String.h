@@ -42,6 +42,8 @@ namespace Bit
 		//	strcpy(_str, str);
 		//}
 
+
+		//初始化
 		string(const char* str = "")//或者string(const char* str = "")
 		{//初始化！
 			_str = new char[strlen(str) + 1];//如果不加+1那么有效字符-1
@@ -56,19 +58,26 @@ namespace Bit
 			_str = nullptr;
 			_size = _capcity = 0;
 		}
+
 		//返回内容
 		const char* c_str() const
 		{
 			return _str;
 		}
-		//返回大小
+		//返回使用大小
 		size_t size() const
 		{
 			return _size;
 		}
+		//返回整体大小
+		size_t capcity() const
+		{
+			return _capcity;
+		}
 
 		char& operator[](size_t pos)//实现随机查找
 		{
+			
 			assert(pos < _size);//!真与!假
 			return _str[pos];
 		} 
@@ -79,6 +88,8 @@ namespace Bit
 		//		//是两个地址的匹对！
 		//		return *this;
 
+		
+		
 		//	delete[] _str;//this指针指向的
 		//	_str = new char[strlen(str._str)+1];
 		//	_size = str._size;//strlen不包含\0
@@ -86,14 +97,20 @@ namespace Bit
 		//	strcpy(_str, str._str);
 		//	return *this;
 		//}
-
-		string& operator = (const string& str)//复制拷贝2
+		//string& operator = (const string& str)//复制拷贝2
+		//{
+		//	if (this == &str)//防止自己给自己赋值
+		//		//是两个地址的匹对！
+		//		return *this;
+		//	string tmp(str._str);
+		//	swap(tmp);
+		//	return *this;
+		//}
+		
+		//直接让str顶替tmp
+		string& operator = (string str)//复制拷贝3
 		{
-			if (this == &str)//防止自己给自己赋值
-				//是两个地址的匹对！
-				return *this;
-			string tmp(str._str);
-			swap(tmp);
+			swap(str);
 			return *this;
 		}
 		//string(const string& str)//拷贝构造方法1
@@ -135,12 +152,111 @@ namespace Bit
 		//	std::swap(_capcity, tmp._capcity);
 		//	std::swap(_size, tmp._size);
 		//}
+		void reserve(size_t n)//扩容大小！
+		{
+			if (n > _capcity)
+			{
+				char* tmp = new char[n + 1];
+				strcpy(tmp, _str);
+				delete[] _str;
+				//全新长度的_str
+				_str = tmp;
+				_capcity = n;
+			}
+		}
+
+		void push_back(char ch)//尾插一个字符
+		{
+			//满了就扩容
+			if (_size > _capcity)
+			{
+				reserve(_capcity == 0 ? 4 : _capcity * 2);
+			}
+			_str[_size] = ch;
+			++_size;
+			_str[_size] = '\0';
+
+		}
+		void append(const char* str)//插入一个字符串
+		{
+			size_t len = strlen(str);
+			size_t all = _size + len;//已使用大小加上被真加的字符大小！
+			if (all > _capcity)
+			{
+				reserve(all);
+			}
+			// 将要插入的字符串拷贝到当前字符串的末尾
+			strcpy(_str + _size, str);  // _str + _size 表示当前字符串的末尾位置
+			_size += len;  // 更新当前字符串的长度  
+		}
+		string& operator+=(char ch)
+		{
+			push_back(ch);
+			return *this;
+		}
+		string& operator+=(const char* ch)
+		{
+			append(ch);
+			return *this;
+		}
+		//string& insert(size_t pos, char* ch)//插入
+		//{
+		//	assert(pos <= _capcity);//非假为真
+		//	if (_size == _capcity)
+		//	{
+		//		reserve(_capcity == 0 ? 4 : _capcity * 2);
+		//	}
+		//	size_t end = _size;
+		//	while (end >= pos)
+		//	{
+		//		_str[end + 1] = _str[end];
+		//		--end;
+		//	}
+		//	_str[pos] = ch;
+		//	++_size;
+		//	return *this;
+		//}
+
+		string& insert(size_t pos, const char* ch)//按照位置插入
+		{
+			assert(pos <= _capcity);
+			size_t chLength = strlen(ch);//获得ch的长度
+			size_t newSize = _size + chLength;//全新的总长度已经使用的的长度+新的长度
+			//判断是否需要扩容
+			if (newSize >= _capcity)
+			{
+				size_t newCapacity = (_capcity == 0) ? 4 : _capcity * 2;
+				reserve(newCapacity);
+			}
+			// 移动现有字符为插入的字符串腾出空间
+			for (int i = _size; i >= (int)pos; --i)
+			{
+				_str[i + chLength] = _str[i];//后往后移动
+			}
+			// 将字符从输入字符串复制到指定位置
+			for (size_t i = 0; i < chLength; ++i)
+			{
+				_str[pos + i] = ch[i];
+			}
+			_size = newSize;
+			return *this;
+		}
+
+		void erase(size_t pos, size_t npos)
+		{
+
+		}
 		friend std::ostream& operator << (std::ostream& os, const string& str);//流提取输出
  	private:
 		char* _str;
 		size_t _size;
 		size_t _capcity;
+		//const static c++特殊处理
+		const static size_t npos = -1;
 	};
+	//size_t string::npos = -1;
+
+
 	std::ostream& operator << (std::ostream& os, const string& str)
 	{
 		os << str.c_str();
@@ -154,9 +270,13 @@ namespace Bit
 	{ 
 		string s1("hello world");
 		string s2;
+		s1 += " hello Morgan";
 		string s3(s1);
 		s2 = s1;
 		string s4;
+		s4 = s1;
+		s4.insert(0, "Wxyz");
 		std::cout << s1 <<std::endl;
+		std::cout << s4 << std::endl; 
 	}
 }
