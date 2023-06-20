@@ -177,7 +177,6 @@ namespace Bit
 			_str[_size] = ch;
 			++_size;
 			_str[_size] = '\0';
-
 		}
 		void append(const char* str)//²åÈëÒ»¸ö×Ö·û´®
 		{
