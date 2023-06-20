@@ -1,5 +1,8 @@
 #include <iostream>
 #include <assert.h>
+#include <conio.h>
+#include <istream>
+using namespace std;
 #pragma once
 #pragma warning(disable:4996)
 namespace Bit
@@ -41,7 +44,6 @@ namespace Bit
 		//{
 		//	strcpy(_str, str);
 		//}
-
 
 		//初始化
 		string(const char* str = "")//或者string(const char* str = "")
@@ -242,41 +244,97 @@ namespace Bit
 			return *this;
 		}
 
-		void erase(size_t pos, size_t npos)
+		void erase(size_t pos, size_t len = npos)//擦除pos第几个开始npos擦除多少个
 		{
-
+			assert(pos < _size);
+			if (pos == npos || pos + len >= _size)
+			{
+				_str[pos] = '\0';
+				_size = pos;
+			}
+			else
+			{
+				strcpy(_str + pos, _str + pos + len);
+				_size -= pos;
+			}
 		}
-		friend std::ostream& operator << (std::ostream& os, const string& str);//流提取输出
+
+		size_t find(char ch, size_t pos = 0);
+		
+		size_t find(const char* sub, size_t pos = 0);
+		
+		bool operator>(const string& s) const;
+	
+		bool operator==(const string& s) const;
+		
+		bool operator<(const string& s) const;
+		
+		bool operator!=(const string& s) const;
+	
+		bool operator>=(const string& s) const;
+	
+		bool operator<=(const string& s) const;
+
+		
  	private:
 		char* _str;
 		size_t _size;
 		size_t _capcity;
 		//const static c++特殊处理
-		const static size_t npos = -1;
+		const static size_t npos = -1;//变为size_t的最大值
 	};
-	//size_t string::npos = -1;
-
-
-	std::ostream& operator << (std::ostream& os, const string& str)
+	ostream& operator<<(ostream& os, const string& str)//流提取输出
 	{
 		os << str.c_str();
 		return os;
 	}
+	istream& operator>>(istream& in, const string& str)//流提取输入
+	{
+		char ch;
+		ch = in.get();
+		ch = in.get();
+		while (ch != ' ' && ch != '\n')
+		{
+			str += ch;
+			ch = in.get();
+		}
+		return in;
+	}
+
+	//size_t string::npos = -1;
+
+
+	/*std::ostream& operator << (std::ostream& os, const string& str)
+	{
+		os << str.c_str();
+		return os;
+	}*/
 	/*void test()
 	{
 		string s1("hello world");
 	}*/
-	void test2()
-	{ 
-		string s1("hello world");
+	//void test2()
+	//{ 
+	//	string s1("hello world");
+	//	string s2;
+	//	s1 += " hello Morgan";
+	//	string s3(s1);
+	//	s2 = s1;
+	//	string s4;
+	//	s4 = s1;
+	//	s4.insert(0, "Wxyz");
+	//	std::cout << s1 <<std::endl;
+	//	std::cout << s4 << std::endl; 
+	//}
+	void test3()
+	{
+		string s1("hello world!!!!!!!!!");
+		cout << s1 << endl;
 		string s2;
-		s1 += " hello Morgan";
-		string s3(s1);
 		s2 = s1;
-		string s4;
-		s4 = s1;
-		s4.insert(0, "Wxyz");
-		std::cout << s1 <<std::endl;
-		std::cout << s4 << std::endl; 
+		std::cout << s2.c_str() << std::endl;
+		s2.erase(5, 10);
+		std::cout << s2.c_str() << std::endl;
+
 	}
 }

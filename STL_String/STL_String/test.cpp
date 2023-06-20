@@ -2,6 +2,6 @@
 #include <iostream>
 int main()
 {
-	Bit::test2();
+	Bit::test3();
 	return 0;
 }
