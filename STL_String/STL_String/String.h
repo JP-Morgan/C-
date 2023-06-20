@@ -287,7 +287,7 @@ namespace Bit
 		os << str.c_str();
 		return os;
 	}
-	istream& operator>>(istream& in, const string& str)//流提取输入
+	istream& operator>>(istream& in,  string& str)//流提取输入
 	{
 		char ch;
 		ch = in.get();
