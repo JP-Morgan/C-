@@ -84,21 +84,20 @@ namespace Bit
 			return _str[pos];
 		} 
 
-		//string& operator = (const string& str)//复制拷贝
-		//{
-		//	if (this == &str)//防止自己给自己赋值
-		//		//是两个地址的匹对！
-		//		return *this;
+		string& operator = (const string& str)//复制拷贝
+		{
+			if (this == &str)//防止自己给自己赋值
+				//是两个地址的匹对！
+				return *this;
+			delete[] _str;//this指针指向的
+			_str = nullptr;
+			_str = new char[strlen(str._str)+1];
+			_size = str._size;//strlen不包含\0
+			_capcity = str._capcity;
+			strcpy(_str, str._str);
+			return *this;
+		}
 
-		
-		
-		//	delete[] _str;//this指针指向的
-		//	_str = new char[strlen(str._str)+1];
-		//	_size = str._size;//strlen不包含\0
-		//	_capcity = str._capcity;
-		//	strcpy(_str, str._str);
-		//	return *this;
-		//}
 		//string& operator = (const string& str)//复制拷贝2
 		//{
 		//	if (this == &str)//防止自己给自己赋值
@@ -108,13 +107,13 @@ namespace Bit
 		//	swap(tmp);
 		//	return *this;
 		//}
-		
-		//直接让str顶替tmp
-		string& operator = (string str)//复制拷贝3
-		{
-			swap(str);
-			return *this;
-		}
+		//
+		////直接让str顶替tmp
+		//string& operator = (string str)//复制拷贝3
+		//{
+		//	swap(str);
+		//	return *this;
+		//}
 		//string(const string& str)//拷贝构造方法1
 		//{
 		//	_str = new char[strlen(str._str) + 1];
