@@ -68,9 +68,82 @@ void test2()
 		cout << e << " ";
 	}
 	cout << endl;
+	vector<int> v1 = {1,3,4,5,87,7,6,5,0};
+	sort(v1.rbegin(), v1.rend());
+	for (auto e : v1)
+	{
+		cout << e << " ";
+	}
+	cout << endl;
+
+}
+void test3()
+{
+	//正确的使用方法
+	vector<int> v1;
+	v1.reserve(10);
+	for (size_t i = 0; i < 10; i++)
+	{
+		v1.push_back(i);
+	}
+	for (auto e : v1)
+	{
+		cout << e << " ";
+	}
+	cout << endl;
+	//错误的使用
+	/*vector<int> v1;
+	v1.reserve(10);
+	for (size_t i = 0; i < 10; i++)
+	{
+		v1[i]=i;
+	}*/
+	//或者可以这样使用
+	vector<int> v2;
+	v2.resize(10);
+	for (size_t i = 0; i < 10; i++)
+	{
+		v2[i]=i;
+	}
+	for (auto e : v2)
+	{
+		cout << e << " ";
+	}
+	cout << endl;
+	//头删
+	v2.erase(v2.begin()+2);
+	for (auto e : v2)
+	{
+		cout << e << " ";
+	}
+	cout << endl;
+	//头插
+	v2.insert(v2.begin(), 99);
+	for (auto e : v2)
+	{
+		cout << e << " ";
+	}
+	cout << endl;
+}
+void test4()
+{
+	class Solution {
+		int singleNumber(vector<int>& nums) {
+			int singleIndex = 0;
+			for (int v : nums)
+			{
+				singleIndex ^= v;
+			}
+			return singleIndex;
+		}
+		
+		
+	};
+	vector<int> a = { 1,2,3,1,2,3,4 };
+	int singleNumber(vector<int> a);
 }
 int main()
 {
-	test2();
+	test4();
 	return 0;
 }
