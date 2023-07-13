@@ -20,15 +20,7 @@ namespace Bit
 		{
 			return _size + _str;
 		}*/
-		typedef const char* const_iterator;
-		const_iterator begin() const
-		{
-			return _str;
-		}
-		const_iterator end() const
-		{
-			return _size + _str;
-		}
+	
 		//string(const char* str)
 		//	: _str(new char[1])//注意：我们不可以初始为nullptr，因为在访问时会出现访问空指针！！！！
 		//	, _size(0)//
@@ -45,46 +37,8 @@ namespace Bit
 		//	strcpy(_str, str);
 		//}
 
-		//初始化
-		string(const char* str = "")//或者string(const char* str = "")
-		{//初始化！
-			_str = new char[strlen(str) + 1];//如果不加+1那么有效字符-1
-			_size = strlen(str);//strlen不包含\0
-			_capcity = strlen(str);
-			strcpy(_str, str);
-		}
-
-		~string()//析构函数
-		{
-			delete[] _str;
-			_str = nullptr;
-			_size = _capcity = 0;
-		}
-
-		//返回内容
-		const char* c_str() const
-		{
-			return _str;
-		}
-		//返回使用大小
-		size_t size() const
-		{
-			return _size;
-		}
-		//返回整体大小
-		size_t capcity() const
-		{
-			return _capcity;
-		}
-
-		char& operator[](size_t pos)//实现随机查找
-		{
-			
-			assert(pos < _size);//!真与!假
-			return _str[pos];
-		} 
-
-		string& operator = (const string& str)//复制拷贝
+		//复制拷贝
+		string& operator = (const string& str)
 		{
 			if (this == &str)//防止自己给自己赋值
 				//是两个地址的匹对！
@@ -129,13 +83,9 @@ namespace Bit
 		//{
 		//	strcpy(_str, str._str);
 		//}
-		void swap(string& str)
-		{
-			std::swap(_str, str._str);
-			std::swap(_capcity, str._capcity);
-			std::swap(_size, str._size);
-		}
-		string(const string& str)//拷贝构造方法3
+
+		//拷贝构造方法3
+		string(const string& str)
 			: _str(nullptr)
 			, _size(0)
 			, _capcity(0)
@@ -157,7 +107,7 @@ namespace Bit
 		{
 			if (n > _capcity)
 			{
-				char* tmp = new char[n + 1];
+				char* tmp = new char[n + 1];//加一为\0
 				strcpy(tmp, _str);
 				delete[] _str;
 				//全新长度的_str
@@ -165,11 +115,11 @@ namespace Bit
 				_capcity = n;
 			}
 		}
-
-		void push_back(char ch)//尾插一个字符
+		//尾插一个字符
+		void push_back(char ch)
 		{
 			//满了就扩容
-			if (_size > _capcity)
+			if (_size == _capcity)
 			{
 				reserve(_capcity == 0 ? 4 : _capcity * 2);
 			}
@@ -177,7 +127,8 @@ namespace Bit
 			++_size;
 			_str[_size] = '\0';
 		}
-		void append(const char* str)//插入一个字符串
+		//插入一个字符串
+		void append(const char* str)
 		{
 			size_t len = strlen(str);
 			size_t all = _size + len;//已使用大小加上被真加的字符大小！
@@ -189,16 +140,7 @@ namespace Bit
 			strcpy(_str + _size, str);  // _str + _size 表示当前字符串的末尾位置
 			_size += len;  // 更新当前字符串的长度  
 		}
-		string& operator+=(char ch)
-		{
-			push_back(ch);
-			return *this;
-		}
-		string& operator+=(const char* ch)
-		{
-			append(ch);
-			return *this;
-		}
+
 		//string& insert(size_t pos, char* ch)//插入
 		//{
 		//	assert(pos <= _capcity);//非假为真
@@ -216,8 +158,9 @@ namespace Bit
 		//	++_size;
 		//	return *this;
 		//}
-
-		string& insert(size_t pos, const char* ch)//按照位置插入
+		
+		//按照位置插入
+		string& insert(size_t pos, const char* ch)
 		{
 			assert(pos <= _capcity);
 			size_t chLength = strlen(ch);//获得ch的长度
@@ -241,8 +184,8 @@ namespace Bit
 			_size = newSize;
 			return *this;
 		}
-
-		void erase(size_t pos, size_t len = npos)//擦除pos第几个开始npos擦除多少个
+		//擦除pos第几个开始npos擦除多少个
+		void erase(size_t pos, size_t len = npos)
 		{
 			assert(pos < _size);
 			if (pos == npos || pos + len >= _size)
@@ -256,8 +199,61 @@ namespace Bit
 				_size -= pos;
 			}
 		}
+		//迭代器
+		typedef const char* const_iterator;
+		const_iterator begin() const
+		{
+			return _str;
+		}
+		const_iterator end() const
+		{
+			return _size + _str;
+		}
+		//交换
+		void swap(string& str)
+		{
+			std::swap(_str, str._str);
+			std::swap(_capcity, str._capcity);
+			std::swap(_size, str._size);
+		}
+		//尾加
+		string& operator+=(char ch)
+		{
+			push_back(ch);
+			return *this;
+		}
+		string& operator+=(const char* ch)
+		{
+			append(ch);
+			return *this;
+		}
+		//返回内容
+		//const 关键字在函数声明中的第一个位置表示该函数不会修改对象的成员变量。
+		//而第二个 const 关键字表示该函数不会修改对象本身。
+		//因此，const char* c_str() const 表示这是一个成员函数，
+		//它不会修改对象的状态，并返回一个指向以 null 结尾的 C 字符串的常量指针。
+		const char* c_str() const
+		{
+			return _str;
+		}
+		//返回使用大小
+		size_t size() const
+		{
+			return _size;
+		}
+		//返回整体大小
+		size_t capcity() const
+		{
+			return _capcity;
+		}
 
-		size_t find(char ch, size_t pos = 0);
+		char& operator[](size_t pos)//实现随机查找
+		{
+
+			assert(pos < _size);//!真与!假
+			return _str[pos];
+		}
+		/*size_t find(char ch, size_t pos = 0);
 		
 		size_t find(const char* sub, size_t pos = 0);
 		
@@ -271,9 +267,23 @@ namespace Bit
 	
 		bool operator>=(const string& s) const;
 	
-		bool operator<=(const string& s) const;
+		bool operator<=(const string& s) const;*/
 
-		
+		//初始化
+		string(const char* str = "")//或者string(const char* str = "")
+		{//初始化！
+			_str = new char[strlen(str) + 1];//如果不加+1那么有效字符-1
+			_size = strlen(str);//strlen不包含\0
+			_capcity = strlen(str);
+			strcpy(_str, str);
+		}
+		//析构函数
+		~string()
+		{
+			delete[] _str;
+			_str = nullptr;
+			_size = _capcity = 0;
+		}
  	private:
 		char* _str;
 		size_t _size;
