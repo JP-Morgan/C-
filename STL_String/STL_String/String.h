@@ -76,23 +76,23 @@ namespace Bit
 		//	strcpy(_str, str._str);
 		//}
 
-		//string(const string& str)//拷贝构造方法2
-		//	: _str(new char[str._capcity])
-		//	, _size(str._size)
-		//	, _capcity(str._capcity)
-		//{
-		//	strcpy(_str, str._str);
-		//}
+		string(const string& str)//拷贝构造方法2
+			: _str(new char[str._capcity])
+			, _size(str._size)
+			, _capcity(str._capcity)
+		{
+			strcpy(_str, str._str);
+		}
 
 		//拷贝构造方法3
-		string(const string& str)
-			: _str(nullptr)
-			, _size(0)
-			, _capcity(0)
-		{
-			string tmp(str._str);//相当于调用构造
-			swap(tmp);
-		}
+		//string(const string& str)
+		//	: _str(nullptr)
+		//	, _size(0)
+		//	, _capcity(0)
+		//{
+		//	string tmp(str._str);//相当于调用构造
+		//	swap(tmp);
+		//}
 		//string(const string& str)//拷贝构造方法3
 		//	: _str(nullptr)
 		//	, _size(0)
@@ -337,6 +337,7 @@ namespace Bit
 	void test3()
 	{
 		string s1("hello world!!!!!!!!!");
+		s1.push_back('1');
 		cout << s1 << endl;
 		string s2;
 		s2 = s1;
