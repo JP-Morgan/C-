@@ -7,15 +7,16 @@ namespace Myvcetor
 	{
 	public:
 		typedef T* iterator;
+		typedef const T* const_iterator;
 
-		
-		
+
+
 		//扩容
 		void reserve(size_t n)
 		{
 			if (n > capacity())
 			{
-				T *tmp = new T[n];
+				T* tmp = new T[n];
 				if (_start)
 				{
 					memcpy(tmp, _start, sizeof(T) * size());
@@ -40,18 +41,26 @@ namespace Myvcetor
 		//方括号访问
 		T& operator[](size_t pos)
 		{
-			return _start[pos]
+			return _start[pos];
 		}
 		T& operator[](size_t pos) const
 		{
 			return _start[pos];
 		}
 		//迭代器
-		iterator end() const
+		iterator end() const//突然想起来了iterator end() const
 		{
 			return _finish;
 		}
 		iterator begin() const
+		{
+			return _start;
+		}
+		const_iterator end() const
+		{
+			return _finish;
+		}
+		const_iterator begin() const
 		{
 			return _start;
 		}
@@ -95,6 +104,11 @@ namespace Myvcetor
 		for (auto e : vi)
 		{
 			std::cout << e << " ";
+		}
+		std::cout << std::endl;
+		for (size_t i = 0; i < vi.size(); i++)
+		{
+			printf("%d", vi[i]);
 		}
 		std::cout << std::endl;
 	}
