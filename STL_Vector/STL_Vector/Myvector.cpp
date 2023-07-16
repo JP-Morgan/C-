@@ -1,10 +1,10 @@
 #include<iostream>
-#include<vector>
+#include"Myvector.h"
 using namespace std;
 
 int main()
 {
-	int ar[] = { 1,2,3,4,5,6,7,8,9,10 };
+	/*int ar[] = { 1,2,3,4,5,6,7,8,9,10 };
 
 	int n = sizeof(ar) / sizeof(int);
 
@@ -22,8 +22,8 @@ int main()
 
 	v.resize(5);
 
-	cout << v.size() << ":" << v.capacity() << endl;
+	cout << v.size() << ":" << v.capacity() << endl;*/
 
-
+	//test1();
 	return 0;
 }
