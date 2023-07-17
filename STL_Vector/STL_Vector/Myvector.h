@@ -10,6 +10,7 @@ namespace Myvcetor
 		typedef T* iterator;
 		typedef const T* const_iterator;
 		
+
 		//扩容
 		void reserve(size_t n)
 		{
@@ -40,7 +41,7 @@ namespace Myvcetor
 			*_finish = x;
 			_finish++;
 		}
-		//插入
+		//插入（迭代器）
 		iterator insert(iterator pos, const T& val)
 		{
 			assert(pos >= _start && pos <= _finish);
@@ -66,6 +67,39 @@ namespace Myvcetor
 			return *this;
 		}
 
+		//删除
+		iterator erase(iterator pos)
+		{
+			//为什么是<_finish?
+			assert(pos >= _start && pos < _finish);
+			iterator dele = pos;
+			while (dele != _finish)
+			{
+				*dele = *(dele + 1);
+				dele++;
+			}
+			_finish--;
+
+			return pos+1
+		}
+
+		//重新定义大小
+		void resize(size_t n, const T& val= T())//T()为匿名函数用法注意：内置类型也是可以使用的
+		{
+			if (n < size())
+			{
+				_finish = _start + n;
+			}
+			else
+			{
+				reserve(n);
+				while (_start + n != _finish)
+				{
+					*_finish = val;
+					_finish++;
+				}
+			}
+		}
 		//方括号访问
 		T& operator[](size_t pos) 
 		{
@@ -104,11 +138,48 @@ namespace Myvcetor
 			return _finish - _start;
 		}
 
+		void swap(vector<T>& v)
+		{
+			std::swap(_start,v._start);
+			std::swap(_finish,v._finish);
+			std::swap(_end_of_storage,v._end_of_storage);
+		}
+
+		vector<T>& operator=(vector<T>& v)
+		{
+			swap(v);
+			return *this;
+		}
 		//初始化
 		vector()
 			: _start(nullptr)
 			, _finish(nullptr)
 			, _end_of_storage(nullptr) {}
+		
+		//拷贝构造
+		vector(const vector<T>& v)
+			: _start(nullptr)
+			, _finish(nullptr)
+			, _end_of_storage(nullptr)
+		{
+			_start = new T[v.capacity()];
+			memcpy(_start, v._start, sizeof(T) * v.size());
+			_finish = _start + v.size();
+			_end_of_storage = _start + v.capacity();
+		}
+		
+		//拷贝构造2
+		/*vector(const vector<T>& v)
+			: _start(nullptr)
+			, _finish(nullptr)
+			, _end_of_storage(nullptr) 
+		{
+			reserve(v.capacity())
+			for (auto e:v)
+			{
+				push_back(e);
+			}
+		}*/
 		
 		//析构
 		~vector()
@@ -144,6 +215,21 @@ void test1()
 	for (size_t i = 0; i < vi.size(); i++)
 	{
 		printf("%d", vi[i]);
+	}
+	std::cout << std::endl;
+}
+void test2()
+{
+	Myvcetor::vector<int> vi;
+	vi.push_back(1);
+	vi.push_back(2);
+	vi.push_back(3);
+	vi.push_back(4);
+	vi.push_back(5);
+	vi.erase(vi.begin());
+	for (auto e : vi)
+	{
+		std::cout << e << " ";
 	}
 	std::cout << std::endl;
 }

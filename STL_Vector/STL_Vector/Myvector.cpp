@@ -24,6 +24,6 @@ int main()
 
 	cout << v.size() << ":" << v.capacity() << endl;*/
 
-	//test1();
+	test2();
 	return 0;
 }
