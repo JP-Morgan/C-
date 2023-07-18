@@ -20,7 +20,12 @@ namespace Myvcetor
 				T* tmp = new T[n];
 				if (_start)
 				{
-					memcpy(tmp, _start, sizeof(T) * sz);
+					//memcpy(tmp, _start, sizeof(T) * sz);
+					//为什么要这样改？
+					for (size_t i = 0; i < sz; i++)
+					{
+						tmp[i] = _start[i];
+					}
 					delete[] _start;
 				}
 				
@@ -180,7 +185,30 @@ namespace Myvcetor
 				push_back(e);
 			}
 		}*/
-		
+		vector(size_t n, const T& val = T())
+			: _start(nullptr)
+			, _finish(nullptr)
+			, _end_of_storage(nullptr)
+		{
+			resize(n, val);
+		}
+		vector(int n, const T& val = T())
+			: _start(nullptr)
+			, _finish(nullptr)
+			, _end_of_storage(nullptr)
+		{
+			resize(n, val);
+		}
+		//[first , last)
+		template<class InputIterator>
+		vector(InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				push_back(*first);
+				first++;
+			}
+		}
 		//析构
 		~vector()
 		{
