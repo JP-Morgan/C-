@@ -11,7 +11,7 @@ namespace Myvcetor
 		typedef const T* const_iterator;
 		
 
-		//扩容
+		////扩容
 		void reserve(size_t n)
 		{
 			if (n > capacity())
@@ -22,11 +22,11 @@ namespace Myvcetor
 				{
 					//memcpy(tmp, _start, sizeof(T) * sz);
 					//为什么要这样改？
-					for (size_t i = 0; i < sz; i++)
+					/*for (size_t i = 0; i < sz; i++)
 					{
 						tmp[i] = _start[i];
 					}
-					delete[] _start;
+					delete[] _start;*/
 				}
 				
 				_start = tmp;
@@ -85,7 +85,7 @@ namespace Myvcetor
 			}
 			_finish--;
 
-			return pos+1
+			return pos + 1;
 		}
 
 		//重新定义大小
@@ -162,7 +162,7 @@ namespace Myvcetor
 			, _end_of_storage(nullptr) {}
 		
 		//拷贝构造
-		vector(const vector<T>& v)
+	/*	vector(const vector<T>& v)
 			: _start(nullptr)
 			, _finish(nullptr)
 			, _end_of_storage(nullptr)
@@ -171,20 +171,21 @@ namespace Myvcetor
 			memcpy(_start, v._start, sizeof(T) * v.size());
 			_finish = _start + v.size();
 			_end_of_storage = _start + v.capacity();
-		}
+		}*/
 		
 		//拷贝构造2
-		/*vector(const vector<T>& v)
+		vector(const vector<T>& v)
 			: _start(nullptr)
 			, _finish(nullptr)
 			, _end_of_storage(nullptr) 
 		{
-			reserve(v.capacity())
+			reserve(v.capacity());
 			for (auto e:v)
 			{
 				push_back(e);
 			}
-		}*/
+		}
+
 		vector(size_t n, const T& val = T())
 			: _start(nullptr)
 			, _finish(nullptr)
@@ -227,37 +228,37 @@ namespace Myvcetor
 	};
 	
 }
-void test1()
-{
-	Myvcetor::vector<int> vi;
-	vi.push_back(1);
-	vi.push_back(2);
-	vi.push_back(3);
-	vi.push_back(4);
-	vi.push_back(5);
-	for (auto e : vi)
-	{
-		std::cout << e << " ";
-	}
-	std::cout << std::endl;
-	for (size_t i = 0; i < vi.size(); i++)
-	{
-		printf("%d", vi[i]);
-	}
-	std::cout << std::endl;
-}
-void test2()
-{
-	Myvcetor::vector<int> vi;
-	vi.push_back(1);
-	vi.push_back(2);
-	vi.push_back(3);
-	vi.push_back(4);
-	vi.push_back(5);
-	vi.erase(vi.begin());
-	for (auto e : vi)
-	{
-		std::cout << e << " ";
-	}
-	std::cout << std::endl;
-}
+//void test1()
+//{
+//	Myvcetor::vector<int> vi;
+//	vi.push_back(1);
+//	vi.push_back(2);
+//	vi.push_back(3);
+//	vi.push_back(4);
+//	vi.push_back(5);
+//	for (auto e : vi)
+//	{
+//		std::cout << e << " ";
+//	}
+//	std::cout << std::endl;
+//	for (size_t i = 0; i < vi.size(); i++)
+//	{
+//		printf("%d", vi[i]);
+//	}
+//	std::cout << std::endl;
+//}
+//void test2()
+//{
+//	Myvcetor::vector<int> vi;
+//	vi.push_back(1);
+//	vi.push_back(2);
+//	vi.push_back(3);
+//	vi.push_back(4);
+//	vi.push_back(5);
+//	vi.erase(vi.begin());
+//	for (auto e : vi)
+//	{
+//		std::cout << e << " ";
+//	}
+//	std::cout << std::endl;
+//}
