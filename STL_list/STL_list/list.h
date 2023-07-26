@@ -5,7 +5,7 @@ namespace List
 	template<class T>//进行模版
 	struct list_node//
 	{
-		list_node<T>* _next;
+		list_node<T>* _next;//T任意类型指针
 		list_node<T>* _prev;
 		T _val;
 		//构造函数
@@ -25,13 +25,25 @@ namespace List
 	{
 		typedef list_node<T> Node;
 		Node* _node;
-		__list_iterator(Node* node)
-			:_node(node)
 
-		{}
-		T& operator*()
+		__list_iterator(Node* node)
+			:_node(node){}
+		T& operator*()//这里的T为
 		{
 			return _node->_val;
+		}
+		//预递增运算符(++)的返回类型
+			//必须为相同的迭代器类型
+				//（ __list_iterator<T>&） 以遵循 C++ 中预增量运算符的约定。
+		__list_iterator<T>& operator++()
+		{
+			 _node = _node->_next;
+			 return *this;
+		}
+
+		bool operator!=(const/*end返回有常性*/ __list_iterator<T>& it)
+		{
+			return _node != it._node;
 		}
 	};
 
@@ -44,17 +56,17 @@ namespace List
 		list()
 		{
 			//产生了一个头节点
-			_head = new _head;
+			_head = new Node;
 			//前后头双向链接
 			_head->_prev = _head;
 			_head->_next = _head;
 		}
-		typedef __list_iterator<T> iterator;
+		typedef __list_iterator<T> iterator;//这里使用时会调用struct __list_iterator
 		iterator begin()
 		{
 			return _head->_next;
 		}
-		iterator end()
+		iterator end()//返回临时对象——常性
 		{
 			return _head;
 		}
@@ -75,7 +87,7 @@ namespace List
 		}
 
 	private:
-		Node* _head;
+		Node* _head;//为typedef list_node<T> Node;
 	};
 }
 void test1()
@@ -87,10 +99,10 @@ void test1()
 	it.push_back(4);
 	it.push_back(5);
 	List::list<int>::iterator lt = it.begin();
-	while (it != it.end())
+	while (lt != it.end())
 	{
-		std::cout << *it << " ";
-		++it;
+		std::cout << *lt << " ";
+		++lt;
 	}
 	std::cout << std::endl;
 }
