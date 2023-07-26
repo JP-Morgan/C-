@@ -25,7 +25,7 @@ namespace List
 	{
 		typedef list_node<T> Node;
 		Node* _node;
-
+		//运用一个节点构造一个迭代器为啥？——因为我们可以用一个地址来改变迭代器底层的玩法，不在是像string和vector一样的
 		__list_iterator(Node* node)
 			:_node(node){}
 		T& operator*()//这里的T为
@@ -64,6 +64,7 @@ namespace List
 		typedef __list_iterator<T> iterator;//这里使用时会调用struct __list_iterator
 		iterator begin()
 		{
+			//单参数的隐式类型转换——为啥？因为_head—>_next和__list_iterator(Node* node)参数是同类型的
 			return _head->_next;
 		}
 		iterator end()//返回临时对象——常性
