@@ -38,6 +38,14 @@
 
 int main()
 {
+	List::list<int> it;
+	it.push_back(1);
+	it.push_back(2);
+	it.push_back(3);
+	it.push_back(4);
+	it.push_back(5);
+	print(it);
 	test1();
+	
 	return 0;
 }
