@@ -63,11 +63,13 @@ namespace List
 	//};
 	
 	//迭代器
-	template<class T,class Ref>
+	/*typedef __list_iterator<T, T&, T*> iterator;
+	typedef __list_iterator<T, const T&, const T*> const_iterator;*/
+	template<class T,class Ref,class Ptr>
 	struct __list_iterator
 	{
 		
-		typedef __list_iterator<T, Ref> self;
+		typedef __list_iterator<T, Ref, Ptr> self;
 		typedef list_node<T> Node;
 		Node* _node;
 		//运用一个节点构造一个迭代器为啥？——因为我们可以用一个地址来改变迭代器底层的玩法，不在是像string和vector一样的
@@ -76,6 +78,11 @@ namespace List
 		Ref operator*()//这里的T为
 		{
 			return _node->_val;
+		}
+
+		Ptr operator->()//访问链表中其他类中的数据
+		{
+			return &_node->_val;
 		}
 		//预递增运算符(++)的返回类型
 		//必须为相同的迭代器类型
@@ -97,11 +104,11 @@ namespace List
 			return tmp;
 		}
 
-		bool operator!=(const/*end返回有常性*/  self& it)
+		bool operator!=(const/*end返回有常性*/  self& it) const
 		{
 			return _node != it._node;
 		}
-		bool operator==(const/*end返回有常性*/  self& it)
+		bool operator==(const/*end返回有常性*/  self& it) const
 		{
 			return _node == it._node;
 		}
@@ -121,21 +128,24 @@ namespace List
 			_head->_prev = _head;
 			_head->_next = _head;
 		}
-		typedef __list_iterator<T, T&> iterator;//这里使用时会调用struct __list_iterator
+		typedef __list_iterator<T, T&, T*> iterator;//这里使用时会调用struct __list_iterator
+		typedef __list_iterator<T, const T&, const T*> const_iterator;
 		iterator begin()
 		{
 			//单参数的隐式类型转换——为啥？因为_head—>_next和__list_iterator(Node* node)参数是同类型的
 			return iterator(_head->_next);
 		}
+
 		iterator end()//返回临时对象——常性
 		{
 			return iterator(_head);
 		}
-		typedef __list_iterator<T, const T&> const_iterator;
+		
 		const_iterator begin() const
 		{
 			return const_iterator(_head->_next);
 		}
+
 		const_iterator end() const
 		{
 			return const_iterator(_head);
