@@ -6,7 +6,8 @@ class Person
 {
 public:
 	Person(string name = " ", size_t age = 18, string id = "0000000000", string speciality = " ",int num = 10)
-		:_Name(name)
+	/*Person(string name)*/
+		: _Name(name)
 		, _Age(age)
 		, _Id(id)
 		, _Speciality(speciality)
@@ -16,15 +17,15 @@ public:
 	{
 		cout << _Age << " ";
 	}
-	void print_naem()
-	{
-		cout << _Name << " ";
-	}
 	void num()
 	{
 		cout << _num << endl;
 	}
-//protected:
+	void print_naem()
+	{
+		cout << _Name << " ";
+	}
+protected:
 	string _Name;
 	size_t _Age;
 	string _Id;
@@ -37,10 +38,11 @@ public:
 class Student:public Person
 {
 public:
-	Student(string college = "XXXXXXX", int dormitory = 0000, int num = 20)
+	Student(string college = "XXXXXXX", int dormitory = 0000, int num = 20,string name = "zhang")
 		:_College(college)
 		,_Dormitory(_Dormitory)
 		,_num(num)
+		
 	{
 
 	}
@@ -53,4 +55,21 @@ protected:
 	int _Dormitory;
 	int _num;
 };
+class teacher:public Person
+{
+public:
+	teacher(string name = "zhang")
+		: _position("xxxx") 
+	{
+	}
+	teacher(const teacher& P)
+		: Person(P)
+		, _position(P._position)
+	{
+
+	}
+protected:
+	string _position;
+};
+
 //基类和派生对象赋值转换

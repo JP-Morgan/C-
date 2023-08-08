@@ -12,11 +12,16 @@
 //	Person& g = a;//进行了切割/切片
 //	/*double& q = h;*/
 //}
+//int main()
+//{
+//	Student a;
+//	Person b;
+//	a.num();
+//	a.Person::num();//可以强制调用父类的同名成员
+//	return 0;
+//}
 int main()
 {
-	Student a;
-	Person b;
-	a.num();
-	a.Person::num();//可以强制调用父类的同名成员
+	teacher t;
 	return 0;
 }
