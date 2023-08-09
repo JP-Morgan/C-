@@ -34,7 +34,7 @@ protected:
 
 	
 };
-	/*派生类(子类)*//*继承方式*//*基类(父类)*/
+	/*派生类(子类)*//*继承方式*//*基类(父类)*/	
 class Student:public Person
 {
 public:
@@ -67,6 +67,12 @@ public:
 		, _position(P._position)
 	{
 
+	}
+	~teacher()
+	{
+		//由于多态的原因，析构函数被特殊处理了
+		// 为了同一处理成destructor
+		//Person::~Person();他会自动调用先子后父的析构
 	}
 protected:
 	string _position;

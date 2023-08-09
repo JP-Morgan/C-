@@ -1,4 +1,4 @@
-#include"test_08_05.h"
+#include "test.h"
 //int main()
 //{
 //	Student a;
@@ -20,8 +20,19 @@
 //	a.Person::num();//可以强制调用父类的同名成员
 //	return 0;
 //}
+//int main()
+//{
+//	teacher t;
+//	return 0;
+//}
 int main()
 {
-	teacher t;
+	D d;
+	d.B::_a = 1;
+	d.C::_a = 2;
+	d._b = 3;
+	d._c = 4;
+	d._d = 5;
+	d._a = 0;
 	return 0;
 }
